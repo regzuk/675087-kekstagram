@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Германн Кузнецов](https://up.htmlacademy.ru/javascript/14/user/675087).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Чудновский](https://up.htmlacademy.ru/javascript/14/user/29109).
 
 ---
 
