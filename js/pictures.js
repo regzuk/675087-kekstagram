@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var PHOTO_COUNT = 25;
+  var PICTURE_COUNT = 25;
   var COMMENTS = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -20,8 +20,9 @@
   ];
   var MIN_COUNT_LIKES = 15;
   var MAX_COUNT_LIKES = 200;
+  var MAX_COMMENT_COUNT = 2;
 
-  var generatePhotoOrder = function (n) {
+  var generatePictureOrder = function (n) {
     var arr = [];
     for (var i = 0; i < n; i++) {
       arr[i] = i + 1;
@@ -37,11 +38,42 @@
   var getRandomArrayElement = function (arr) {
     return arr[Math.floor(arr.length * Math.random())];
   };
-  var createPhotoOption = function (photoNumber) {
-    return {
-      url: 'photos\/' + photoNumber + '.jpg'
+  var createPictureOption = function (pictureNumber) {
+    var pictureUrl = 'photos/' + pictureNumber + '.jpg';
+    var likeCount = Math.round(MAX_COUNT_LIKES * Math.random());
+    var commentCount = Math.ceil(MAX_COMMENT_COUNT * Math.random());
+    var comments = [];
+    for (var i = 0; i < commentCount; i++) {
+      comments[i] = getRandomArrayElement(COMMENTS);
+    }
 
+    return {
+      url: pictureUrl,
+      likes: (likeCount < MIN_COUNT_LIKES) ? MIN_COUNT_LIKES : likeCount,
+      comments: comments,
+      description: getRandomArrayElement(DESCRIPTION)
     };
   };
+  var createPictureElement = function (pictureOption, pictureTemplate) {
+    var pictureElement = pictureTemplate.cloneNode (true);
+    pictureElement.querySelector('img').src = pictureOption.url;
+    pictureElement.querySelector('.picture__stat--likes').textContent = pictureOption.likes;
+    pictureElement.querySelector('.picture__stat--comments').textContent = pictureOption.comments.length;
+
+    return pictureElement;
+  };
+  var createPictureList = function (pictureArray) {
+    var pictureTemplate = document.querySelector('#picture').content;
+
+    var fragment = document.createDocumentFragment();
+    pictureArray.forEach(function (pictureNumber) {
+      fragment.appendChild(createPictureElement(createPictureOption(pictureNumber), pictureTemplate));
+    });
+
+    return fragment;
+  };
+
+  var pictureArray = generatePictureOrder(PICTURE_COUNT);
+  document.querySelector('.pictures').appendChild(createPictureList(pictureArray));
 
 })();
