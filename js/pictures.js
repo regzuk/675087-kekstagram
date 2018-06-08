@@ -35,9 +35,11 @@
     }
     return arr;
   };
+
   var getRandomArrayElement = function (arr) {
     return arr[Math.floor(arr.length * Math.random())];
   };
+
   var createPictureOption = function (pictureNumber) {
     var pictureUrl = 'photos/' + pictureNumber + '.jpg';
     var likeCount = Math.round(MAX_COUNT_LIKES * Math.random());
@@ -54,26 +56,46 @@
       description: getRandomArrayElement(DESCRIPTION)
     };
   };
+
   var createPictureElement = function (pictureOption, pictureTemplate) {
     var pictureElement = pictureTemplate.cloneNode (true);
+
     pictureElement.querySelector('img').src = pictureOption.url;
     pictureElement.querySelector('.picture__stat--likes').textContent = pictureOption.likes;
     pictureElement.querySelector('.picture__stat--comments').textContent = pictureOption.comments.length;
 
     return pictureElement;
   };
+
   var createPictureList = function (pictureArray) {
     var pictureTemplate = document.querySelector('#picture').content;
 
     var fragment = document.createDocumentFragment();
-    pictureArray.forEach(function (pictureNumber) {
-      fragment.appendChild(createPictureElement(createPictureOption(pictureNumber), pictureTemplate));
+    pictureArray.forEach(function (pictureOption) {
+      fragment.appendChild(createPictureElement(pictureOption, pictureTemplate));
     });
 
     return fragment;
   };
 
-  var pictureArray = generatePictureOrder(PICTURE_COUNT);
+  var showBigPicture = function (pictureOption) {
+    var bigPicture = document.querySelector('.big-picture');
+    bigPicture.classList.remove('hidden');
+
+    bigPicture.querySelector('.big-picture__img img').src = pictureOption.url;
+    bigPicture.querySelector('.likes-count').textContent = pictureOption.likes;
+    bigPicture.querySelector('.comments-count').textContent = pictureOption.comments.length;
+    bigPicture.querySelector('.social__caption').textContent = pictureOption.description;
+
+    var bigPictureComments = bigPicture.querySelector('.social__comments');
+
+  }
+
+  var pictureArray = generatePictureOrder(PICTURE_COUNT).map(function (pictureNumber) {
+    return createPictureOption(pictureNumber);
+  });
   document.querySelector('.pictures').appendChild(createPictureList(pictureArray));
+
+  showBigPicture(pictureArray[0]);
 
 })();
