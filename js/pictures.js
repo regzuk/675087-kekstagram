@@ -59,7 +59,7 @@
   };
 
   var createPictureElement = function (pictureOption, pictureTemplate) {
-    var pictureElement = pictureTemplate.cloneNode (true);
+    var pictureElement = pictureTemplate.cloneNode(true);
 
     pictureElement.querySelector('img').src = pictureOption.url;
     pictureElement.querySelector('.picture__stat--likes').textContent = pictureOption.likes;
@@ -94,7 +94,7 @@
     comment.appendChild(document.createTextNode(textComment));
 
     return comment;
-  }
+  };
 
   var removeAllComments = function (pictureComments) {
     while (pictureComments.firstChild) {
@@ -104,8 +104,8 @@
 
   var createCommnetList = function (commentArray) {
     var fragment = document.createDocumentFragment();
-    commentArray.forEach (function (textComment) {
-      fragment.appendChild (createComment(textComment));
+    commentArray.forEach(function (textComment) {
+      fragment.appendChild(createComment(textComment));
     });
 
     return fragment;
@@ -121,12 +121,12 @@
     bigPicture.querySelector('.social__caption').textContent = pictureOption.description;
 
     var bigPictureComments = bigPicture.querySelector('.social__comments');
-    removeAllComments (bigPictureComments);
+    removeAllComments(bigPictureComments);
 
     bigPictureComments.appendChild(createCommnetList(pictureOption.comments));
     bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
     bigPicture.querySelector('.social__loadmore').classList.add('visually-hidden');
-  }
+  };
 
   var pictureArray = generatePictureOrder(PICTURE_COUNT).map(function (pictureNumber) {
     return createPictureOption(pictureNumber);
