@@ -24,7 +24,6 @@
   var AVATAR_COUNT = 6;
 
   var ESC_KEYCODE = 27;
-  var ENTER_KEYCODE = 13;
 
   var generatePictureOrder = function (n) {
     var arr = [];
@@ -206,13 +205,13 @@
     resizeImg(25);
   });
   scalePin.addEventListener('mouseup', function () {
-    scaleValue = Math.round(scalePin.offsetLeft / scaleLine.offsetWidth * 100);
+    scaleValue.value = Math.round(scalePin.offsetLeft / scaleLine.offsetWidth * 100);
 
   });
 
   var removeAllEffects = function () {
     uploadImgPreview.className = '';
-  }
+  };
   var applyEffect = function (effectName) {
     removeAllEffects();
     uploadImgPreview.classList.add('effects__preview--' + effectName);
@@ -221,7 +220,7 @@
     } else {
       uploadScale.classList.remove('hidden');
     }
-  }
+  };
 
   effectsList.addEventListener('click', function (evt) {
     var path = evt.path;
