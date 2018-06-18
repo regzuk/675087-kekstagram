@@ -209,7 +209,7 @@
 
     var filter = '';
     var effectType = effectsList.querySelector('.effects__radio:checked').value;
-    switch(effectType) {
+    switch (effectType) {
       case 'chrome':
         filter = 'grayscale(' + scaleValue.value / 100 + ')';
         break;
