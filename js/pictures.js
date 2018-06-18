@@ -168,10 +168,13 @@
   var scaleValue = uploadScale.querySelector('.scale__value');
   var scalePin = scaleLine.querySelector('.scale__pin');
   var effectsList = uploadOverlay.querySelector('.img-upload__effects');
+  var uploadText = uploadOverlay.querySelector('.img-upload__text');
+  var textHashtags = uploadText.querySelector('.text__hashtags');
 
 
   var uploadOverlayEscPressHandler = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    var textDescription = uploadText.querySelector('.text__description');
+    if (evt.keyCode === ESC_KEYCODE && evt.target !== textHashtags && evt.target !== textDescription) {
       closeUploadOverlay();
     }
   };
@@ -257,4 +260,57 @@
     effect = effectItem.querySelector('.effects__radio').value;
     applyEffect(effect);
   });
+
+  var validateHashtags = function () {
+    var arrHashtags = textHashtags.value.toLowerCase().split(' ').filter(function (x) {
+      return x.length > 0;
+    });
+    var hashtagsCount = arrHashtags.length;
+    // if(hashtagsCount > 5) {
+    //   textHashtags.setCustomValidity('Слишком много хештегов, максимум 5');
+    //   return;
+    // }
+    var checkingHash = arrHashtags.every(function (x) {
+      return x[0] === '#';
+    });
+    // if(!checkingHash) {
+    //   textHashtags.setCustomValidity('Хэштеги должны начинаться с #');
+    //   return;
+    // }
+    var checkingMinLength = arrHashtags.every(function (x) {
+      return x.length !== 1;
+    });
+    // if(!checkingMinLength) {
+    //   textHashtags.setCustomValidity('Хэштеги не могут состоять из одной #');
+    //   return;
+    // }
+    var checkingMaxLength = arrHashtags.every(function (x) {
+      return x.length <= 20;
+    });
+    // if(!checkingMaxLength) {
+    //   textHashtags.setCustomValidity('Хэштеги не могут быть длиннее 20 символов (вместе с решеткой)');
+    //   return;
+    // }
+    var chekingEqual = true;
+    for (var i = 0; i < arrHashtags.length; i++) {
+      for (var j = i + 1; j < arrHashtags.length; j++) {
+        if (arrHashtags[i] === arrHashtags[j]) {
+          //textHashtags.setCustomValidity('Хэштеги не могут быть одинаковыми');
+          //return;
+          chekingEqual = false;
+        }
+      }
+    }
+
+    if (hashtagsCount > 5 || !checkingHash || !checkingMinLength || !checkingMaxLength || !chekingEqual) {
+      textHashtags.setCustomValidity('WRONG');
+    } else {
+      textHashtags.setCustomValidity('');
+    }
+  };
+
+  textHashtags.addEventListener('change', function () {
+    validateHashtags();
+  });
+
 })();
