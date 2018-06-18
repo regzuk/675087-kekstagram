@@ -211,19 +211,19 @@
     var effectType = effectsList.querySelector('.effects__radio:checked').value;
     switch(effectType) {
       case 'chrome':
-        filter = 'grayscale(' + scaleValue.value / 100 + ')'
+        filter = 'grayscale(' + scaleValue.value / 100 + ')';
         break;
       case 'sepia':
-        filter = 'sepia(' + scaleValue.value / 100 + ')'
+        filter = 'sepia(' + scaleValue.value / 100 + ')';
         break;
       case 'marvin':
-        filter = 'invert(' + scaleValue.value + '%)'
+        filter = 'invert(' + scaleValue.value + '%)';
         break;
       case 'phobos':
-        filter = 'blur(' + scaleValue.value / 100 * 3 + 'px)'
+        filter = 'blur(' + scaleValue.value / 100 * 3 + 'px)';
         break;
       case 'heat':
-        filter = 'brightness(' + (1 + scaleValue.value / 100 * 2) + ')'
+        filter = 'brightness(' + (1 + scaleValue.value / 100 * 2) + ')';
         break;
     }
     uploadImgPreview.style.filter = filter;
