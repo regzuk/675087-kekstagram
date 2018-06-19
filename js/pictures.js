@@ -261,55 +261,41 @@
     applyEffect(effect);
   });
 
+  var getUniqueArray = function (arr) {
+    var obj = {};
+    arr.forEach(function (x) {
+      obj[x] = true;
+    });
+
+    return Object.keys(obj);
+  };
+
   var validateHashtags = function () {
     var arrHashtags = textHashtags.value.toLowerCase().split(' ').filter(function (x) {
       return x.length > 0;
     });
-    var hashtagsCount = arrHashtags.length;
-    // if(hashtagsCount > 5) {
-    //   textHashtags.setCustomValidity('Слишком много хештегов, максимум 5');
-    //   return;
-    // }
-    var checkingHash = arrHashtags.every(function (x) {
-      return x[0] === '#';
-    });
-    // if(!checkingHash) {
-    //   textHashtags.setCustomValidity('Хэштеги должны начинаться с #');
-    //   return;
-    // }
-    var checkingMinLength = arrHashtags.every(function (x) {
-      return x.length !== 1;
-    });
-    // if(!checkingMinLength) {
-    //   textHashtags.setCustomValidity('Хэштеги не могут состоять из одной #');
-    //   return;
-    // }
-    var checkingMaxLength = arrHashtags.every(function (x) {
-      return x.length <= 20;
-    });
-    // if(!checkingMaxLength) {
-    //   textHashtags.setCustomValidity('Хэштеги не могут быть длиннее 20 символов (вместе с решеткой)');
-    //   return;
-    // }
-    var chekingEqual = true;
-    for (var i = 0; i < arrHashtags.length; i++) {
-      for (var j = i + 1; j < arrHashtags.length; j++) {
-        if (arrHashtags[i] === arrHashtags[j]) {
-          //textHashtags.setCustomValidity('Хэштеги не могут быть одинаковыми');
-          //return;
-          chekingEqual = false;
-        }
-      }
-    }
-
-    if (hashtagsCount > 5 || !checkingHash || !checkingMinLength || !checkingMaxLength || !chekingEqual) {
-      textHashtags.setCustomValidity('WRONG');
+    if (arrHashtags.length > 5) {
+      textHashtags.setCustomValidity('Слишком много хештегов, максимум 5');
+    } else if (arrHashtags.some(function (x) {
+      return x[0] !== '#';
+    })) {
+      textHashtags.setCustomValidity('Хэштеги должны начинаться с #');
+    } else if (arrHashtags.some(function (x) {
+      return x.length === 1;
+    })) {
+      textHashtags.setCustomValidity('Хэштеги не могут состоять из одной #');
+    } else if (arrHashtags.some(function (x) {
+      return x.length > 20;
+    })) {
+      textHashtags.setCustomValidity('Хэштеги не могут быть длиннее 20 символов (вместе с решеткой)');
+    } else if (getUniqueArray(arrHashtags).length !== arrHashtags.length) {
+      textHashtags.setCustomValidity('Хэштеги не могут быть одинаковыми');
     } else {
       textHashtags.setCustomValidity('');
     }
   };
 
-  textHashtags.addEventListener('change', function () {
+  textHashtags.addEventListener('input', function () {
     validateHashtags();
   });
 
