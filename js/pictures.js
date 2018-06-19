@@ -168,10 +168,13 @@
   var scaleValue = uploadScale.querySelector('.scale__value');
   var scalePin = scaleLine.querySelector('.scale__pin');
   var effectsList = uploadOverlay.querySelector('.img-upload__effects');
+  var uploadText = uploadOverlay.querySelector('.img-upload__text');
+  var textHashtags = uploadText.querySelector('.text__hashtags');
 
 
   var uploadOverlayEscPressHandler = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    var textDescription = uploadText.querySelector('.text__description');
+    if (evt.keyCode === ESC_KEYCODE && evt.target !== textHashtags && evt.target !== textDescription) {
       closeUploadOverlay();
     }
   };
@@ -257,4 +260,43 @@
     effect = effectItem.querySelector('.effects__radio').value;
     applyEffect(effect);
   });
+
+  var getUniqueArray = function (arr) {
+    var obj = {};
+    arr.forEach(function (x) {
+      obj[x] = true;
+    });
+
+    return Object.keys(obj);
+  };
+
+  var validateHashtags = function () {
+    var arrHashtags = textHashtags.value.toLowerCase().split(' ').filter(function (x) {
+      return x.length > 0;
+    });
+    if (arrHashtags.length > 5) {
+      textHashtags.setCustomValidity('Слишком много хештегов, максимум 5');
+    } else if (arrHashtags.some(function (x) {
+      return x[0] !== '#';
+    })) {
+      textHashtags.setCustomValidity('Хэштеги должны начинаться с #');
+    } else if (arrHashtags.some(function (x) {
+      return x.length === 1;
+    })) {
+      textHashtags.setCustomValidity('Хэштеги не могут состоять из одной #');
+    } else if (arrHashtags.some(function (x) {
+      return x.length > 20;
+    })) {
+      textHashtags.setCustomValidity('Хэштеги не могут быть длиннее 20 символов (вместе с решеткой)');
+    } else if (getUniqueArray(arrHashtags).length !== arrHashtags.length) {
+      textHashtags.setCustomValidity('Хэштеги не могут быть одинаковыми');
+    } else {
+      textHashtags.setCustomValidity('');
+    }
+  };
+
+  textHashtags.addEventListener('input', function () {
+    validateHashtags();
+  });
+
 })();
