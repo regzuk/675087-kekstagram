@@ -53,7 +53,7 @@
       changeEffectValue(scaleValue.value, effectType);
     };
 
-    var mouseUpHandler = function (upEvt) {
+    var mouseUpHandler = function () {
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
     };
