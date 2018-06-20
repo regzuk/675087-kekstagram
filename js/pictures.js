@@ -228,7 +228,7 @@
   };
 
   effectsList.addEventListener('click', function (evt) {
-    var path = evt.path;
+    var path = evt.path || (evt.composedPath && evt.composedPath());
     var effectItem;
     var effect;
     for (var i = 0; i < path.length; i++) {
