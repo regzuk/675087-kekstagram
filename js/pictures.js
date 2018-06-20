@@ -174,6 +174,11 @@
 
   document.uploadOverlay = uploadOverlay;
 
+  var removeAllEffects = function () {
+    uploadImgPreview.className = 'img-upload__preview';
+    uploadImgPreview.style.filter = '';
+  };
+
   var uploadOverlayEscPressHandler = function (evt) {
     var textDescription = uploadText.querySelector('.text__description');
     if (evt.keyCode === ESC_KEYCODE && evt.target !== textHashtags && evt.target !== textDescription) {
@@ -184,6 +189,9 @@
     uploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', uploadOverlayEscPressHandler);
     resizeValue.value = '100%';
+    uploadScale.classList.add('hidden');
+    effectsList.querySelector('#effect-none').checked = true;
+    removeAllEffects();
   };
   var closeUploadOverlay = function () {
     uploadOverlay.classList.add('hidden');
@@ -210,10 +218,6 @@
     resizeImg(25);
   });
 
-  var removeAllEffects = function () {
-    uploadImgPreview.className = '';
-    uploadImgPreview.style.filter = '';
-  };
   var applyEffect = function (effectName) {
     removeAllEffects();
     uploadImgPreview.classList.add('effects__preview--' + effectName);
