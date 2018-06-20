@@ -167,10 +167,12 @@
   var scaleLine = uploadScale.querySelector('.scale__line');
   var scaleValue = uploadScale.querySelector('.scale__value');
   var scalePin = scaleLine.querySelector('.scale__pin');
+  var scaleLevel = scaleLine.querySelector('.scale__level');
   var effectsList = uploadOverlay.querySelector('.img-upload__effects');
   var uploadText = uploadOverlay.querySelector('.img-upload__text');
   var textHashtags = uploadText.querySelector('.text__hashtags');
 
+  document.uploadOverlay = uploadOverlay;
 
   var uploadOverlayEscPressHandler = function (evt) {
     var textDescription = uploadText.querySelector('.text__description');
@@ -207,31 +209,6 @@
   resizeValuePlus.addEventListener('click', function () {
     resizeImg(25);
   });
-  scalePin.addEventListener('mouseup', function () {
-    scaleValue.value = Math.round(scalePin.offsetLeft / scaleLine.offsetWidth * 100);
-
-    var filter = '';
-    var effectType = effectsList.querySelector('.effects__radio:checked').value;
-    switch (effectType) {
-      case 'chrome':
-        filter = 'grayscale(' + scaleValue.value / 100 + ')';
-        break;
-      case 'sepia':
-        filter = 'sepia(' + scaleValue.value / 100 + ')';
-        break;
-      case 'marvin':
-        filter = 'invert(' + scaleValue.value + '%)';
-        break;
-      case 'phobos':
-        filter = 'blur(' + scaleValue.value / 100 * 3 + 'px)';
-        break;
-      case 'heat':
-        filter = 'brightness(' + (1 + scaleValue.value / 100 * 2) + ')';
-        break;
-    }
-    uploadImgPreview.style.filter = filter;
-
-  });
 
   var removeAllEffects = function () {
     uploadImgPreview.className = '';
@@ -244,6 +221,9 @@
       uploadScale.classList.add('hidden');
     } else {
       uploadScale.classList.remove('hidden');
+      scalePin.style.left = scaleLine.offsetWidth + 'px';
+      scaleLevel.style.width = scaleLine.offsetWidth + 'px';
+      scaleValue.value = 100;
     }
   };
 
