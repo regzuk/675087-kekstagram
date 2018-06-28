@@ -5,7 +5,7 @@
 
   var isEnterEsc = function (evt) {
     return evt.keyCode === ESC_KEYCODE;
-  }
+  };
 
   document.utils = {
     isEnterEsc: isEnterEsc
