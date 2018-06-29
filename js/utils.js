@@ -7,7 +7,7 @@
     return evt.keyCode === ESC_KEYCODE;
   };
 
-  document.utils = {
+  window.utils = {
     isEnterEsc: isEnterEsc
   };
 })();

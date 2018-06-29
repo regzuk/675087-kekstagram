@@ -17,7 +17,7 @@
   var uploadText = uploadOverlay.querySelector('.img-upload__text');
   var textHashtags = uploadText.querySelector('.text__hashtags');
 
-  document.uploadOverlay = uploadOverlay;
+  window.uploadOverlay = uploadOverlay;
 
   var removeAllEffects = function () {
     uploadImgPreview.className = 'img-upload__preview';
@@ -26,7 +26,7 @@
 
   var uploadOverlayEscPressHandler = function (evt) {
     var textDescription = uploadText.querySelector('.text__description');
-    if (document.utils.isEnterEsc(evt) && evt.target !== textHashtags && evt.target !== textDescription) {
+    if (window.utils.isEnterEsc(evt) && evt.target !== textHashtags && evt.target !== textDescription) {
       closeUploadOverlay();
     }
   };

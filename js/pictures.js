@@ -10,7 +10,7 @@
     pictureElement.querySelector('.picture__stat--comments').textContent = pictureOption.comments.length;
 
     pictureElement.querySelector('img').addEventListener('click', function () {
-      document.showBigPicture(pictureOption);
+      window.picturePreview(pictureOption);
     });
     return pictureElement;
   };
@@ -26,6 +26,8 @@
     return fragment;
   };
 
-  document.querySelector('.pictures').appendChild(createPictureList(document.picturesData));
+  window.backend.load(function (pictures) {
+    document.querySelector('.pictures').appendChild(createPictureList(pictures));
+  });
 
 })();

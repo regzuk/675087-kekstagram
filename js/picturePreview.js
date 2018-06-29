@@ -39,7 +39,7 @@
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 
-  document.showBigPicture = function (pictureOption) {
+  window.picturePreview = function (pictureOption) {
     bigPicture.classList.remove('hidden');
     document.querySelector('body').classList.add('modal-open');
     document.addEventListener('keydown', bigPictureEscPressHandler);
@@ -62,7 +62,7 @@
     document.removeEventListener('keydown', bigPictureEscPressHandler);
   };
   var bigPictureEscPressHandler = function (evt) {
-    if (document.utils.isEnterEsc(evt)) {
+    if (window.utils.isEnterEsc(evt)) {
       closeBigPicture();
     }
   };
