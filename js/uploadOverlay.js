@@ -3,6 +3,7 @@
 (function () {
   var uploadFileInput = document.querySelector('#upload-file');
   var uploadOverlay = document.querySelector('.img-upload__overlay');
+  var uploadForm = document.querySelector('#upload-select-image');
   var uploadOverlayCancel = uploadOverlay.querySelector('#upload-cancel');
   var resizeValue = uploadOverlay.querySelector('.resize__control--value');
   var resizeValueMinus = uploadOverlay.querySelector('.resize__control--minus');
@@ -126,5 +127,9 @@
 
   textHashtags.addEventListener('input', function () {
     validateHashtags();
+  });
+
+  uploadForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
   });
 })();
