@@ -129,7 +129,12 @@
     validateHashtags();
   });
 
+  var submitForm = function () {
+    closeUploadOverlay();
+  };
+
   uploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
+    window.backend.save(new FormData(uploadForm), submitForm, window.utils.errorHandler);
   });
 })();

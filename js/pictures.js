@@ -28,6 +28,6 @@
 
   window.backend.load(function (pictures) {
     document.querySelector('.pictures').appendChild(createPictureList(pictures));
-  });
+  }, window.utils.errorHandler);
 
 })();
