@@ -3,6 +3,7 @@
 (function () {
   var uploadFileInput = document.querySelector('#upload-file');
   var uploadOverlay = document.querySelector('.img-upload__overlay');
+  var uploadForm = document.querySelector('#upload-select-image');
   var uploadOverlayCancel = uploadOverlay.querySelector('#upload-cancel');
   var resizeValue = uploadOverlay.querySelector('.resize__control--value');
   var resizeValueMinus = uploadOverlay.querySelector('.resize__control--minus');
@@ -17,7 +18,7 @@
   var uploadText = uploadOverlay.querySelector('.img-upload__text');
   var textHashtags = uploadText.querySelector('.text__hashtags');
 
-  document.uploadOverlay = uploadOverlay;
+  window.uploadOverlay = uploadOverlay;
 
   var removeAllEffects = function () {
     uploadImgPreview.className = 'img-upload__preview';
@@ -26,7 +27,7 @@
 
   var uploadOverlayEscPressHandler = function (evt) {
     var textDescription = uploadText.querySelector('.text__description');
-    if (document.utils.isEnterEsc(evt) && evt.target !== textHashtags && evt.target !== textDescription) {
+    if (window.utils.isEnterEsc(evt) && evt.target !== textHashtags && evt.target !== textDescription) {
       closeUploadOverlay();
     }
   };
@@ -126,5 +127,14 @@
 
   textHashtags.addEventListener('input', function () {
     validateHashtags();
+  });
+
+  var submitForm = function () {
+    closeUploadOverlay();
+  };
+
+  uploadForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(uploadForm), submitForm, window.utils.errorHandler);
   });
 })();

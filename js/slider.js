@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-  var uploadImgPreview = document.uploadOverlay.querySelector('.img-upload__preview');
-  var uploadScale = document.uploadOverlay.querySelector('.img-upload__scale');
+  var uploadImgPreview = window.uploadOverlay.querySelector('.img-upload__preview');
+  var uploadScale = window.uploadOverlay.querySelector('.img-upload__scale');
   var scaleLine = uploadScale.querySelector('.scale__line');
   var scaleValue = uploadScale.querySelector('.scale__value');
   var scalePin = scaleLine.querySelector('.scale__pin');
   var scaleLevel = scaleLine.querySelector('.scale__level');
-  var effectsList = document.uploadOverlay.querySelector('.img-upload__effects');
+  var effectsList = window.uploadOverlay.querySelector('.img-upload__effects');
 
   scalePin.addEventListener('mousedown', function (evt) {
     var coord = evt.clientX;
