@@ -25,7 +25,7 @@
       }, 4000);
     },
     debounce: function (func) {
-      var lastTimeout = undefined;
+      var lastTimeout;
 
       return function () {
         var args = arguments;
