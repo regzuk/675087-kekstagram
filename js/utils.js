@@ -2,6 +2,7 @@
 
 (function () {
   var ESC_KEYCODE = 27;
+  var DEBOUNCE_INTERVAL = 500;
 
   window.utils = {
     isEnterEsc: function (evt) {
@@ -22,6 +23,19 @@
       setTimeout(function () {
         document.body.querySelector('main').removeChild(node);
       }, 4000);
+    },
+    debounce: function (func) {
+      var lastTimeout;
+
+      return function () {
+        var args = arguments;
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function () {
+          func.apply(null, args);
+        }, DEBOUNCE_INTERVAL);
+      };
     }
   };
 })();
