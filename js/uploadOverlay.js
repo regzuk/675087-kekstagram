@@ -43,6 +43,7 @@
     uploadOverlay.classList.add('hidden');
     document.removeEventListener('keydown', uploadOverlayEscPressHandler);
     uploadFileInput.value = '';
+    uploadImgPreview.style.transform = '';
   };
   var resizeImg = function (step) {
     var sizeValue = +resizeValue.value.slice(0, -1) + step;
@@ -52,7 +53,20 @@
     uploadImgPreview.style.transform = 'scale(' + sizeValue / 100 + ')';
   };
   uploadFileInput.addEventListener('change', function () {
-    openUploadOverlay();
+    var file = uploadFileInput.files[0];
+    var img = uploadImgPreview.querySelector('img');
+    var effectsImg = effectsList.querySelectorAll('.effects__preview');
+    var reader = new FileReader();
+
+    reader.addEventListener('load', function () {
+      img.src = reader.result;
+      effectsImg.forEach(function (x) {
+        x.style.backgroundImage = 'url(' + reader.result + ')';
+      });
+      openUploadOverlay();
+    });
+
+    reader.readAsDataURL(file);
   });
   uploadOverlayCancel.addEventListener('click', function () {
     closeUploadOverlay();
