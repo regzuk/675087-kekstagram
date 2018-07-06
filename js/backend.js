@@ -8,7 +8,7 @@
     STATUS_ERROR: 'Запрос не выполнен. Статус ответа: ',
     LOAD_ERROR: 'Запрос не выполнен. ',
     TIMEOUT_ERROR: 'Время выполнения запроса (в мс) превысило '
-  }
+  };
   var URL = 'https://js.dump.academy/kekstagram';
   var addBackendResponseHandlers = function (xhr, onLoad, onError) {
     xhr.addEventListener('load', function () {
@@ -22,7 +22,7 @@
       onError(ERROR.LOAD_ERROR + xhr.response);
     });
     xhr.addEventListener('timeout', function () {
-      onError(TIMEOUT_ERROR + xhr.timeout);
+      onError(ERROR.TIMEOUT_ERROR + xhr.timeout);
     });
   };
   var configureXHR = function (onLoad, onError) {
