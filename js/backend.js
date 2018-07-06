@@ -1,35 +1,45 @@
 'use strict';
 
 (function () {
+  var STATUS = {
+    OK: 200
+  };
+  var ERROR = {
+    STATUS_ERROR: 'Запрос не выполнен. Статус ответа: ',
+    LOAD_ERROR: 'Запрос не выполнен. ',
+    TIMEOUT_ERROR: 'Время выполнения запроса (в мс) превысило '
+  };
   var URL = 'https://js.dump.academy/kekstagram';
   var addBackendResponseHandlers = function (xhr, onLoad, onError) {
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === STATUS.OK) {
         onLoad(xhr.response);
       } else {
-        onError('Запрос не выполнен. Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError(ERROR.STATUS_ERROR + xhr.status + ' ' + xhr.statusText);
       }
     });
     xhr.addEventListener('error', function () {
-      onError('Запрос не выполнен. ' + xhr.response);
+      onError(ERROR.LOAD_ERROR + xhr.response);
     });
     xhr.addEventListener('timeout', function () {
-      onError('Время выполнения запроса превысило ' + xhr.timeout + 'мс');
+      onError(ERROR.TIMEOUT_ERROR + xhr.timeout);
     });
+  };
+  var configureXHR = function (onLoad, onError) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    addBackendResponseHandlers(xhr, onLoad, onError);
+    return xhr;
   };
   window.backend = {
     load: function (onLoad, onError) {
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'json';
-      addBackendResponseHandlers(xhr, onLoad, onError);
+      var xhr = configureXHR(onLoad, onError);
 
       xhr.open('GET', URL + '/data');
       xhr.send();
     },
     save: function (data, onLoad, onError) {
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'json';
-      addBackendResponseHandlers(xhr, onLoad, onError);
+      var xhr = configureXHR(onLoad, onError);
 
       xhr.open('POST', URL);
       xhr.send(data);

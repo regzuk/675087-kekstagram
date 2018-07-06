@@ -3,6 +3,12 @@
 (function () {
 
   var AVATAR_COUNT = 6;
+  var COMMENT_COUNT = 5;
+  var AVATAR_TEXT = 'Аватар комментатора фотографии';
+  var AVATAR_WIDTH = 35;
+  var AVATAR_HEIGHT = 35;
+  var AVATAR_PATH = 'img/avatar-';
+  var AVATAR_EXT = '.svg';
 
   var createComment = function (textComment) {
     var comment = document.createElement('li');
@@ -10,10 +16,10 @@
 
     var avatar = document.createElement('img');
     avatar.classList.add('social__picture');
-    avatar.src = 'img/avatar-' + Math.ceil(AVATAR_COUNT * Math.random()) + '.svg';
-    avatar.alt = 'Аватар комментатора фотографии';
-    avatar.width = '35';
-    avatar.height = '35';
+    avatar.src = AVATAR_PATH + Math.ceil(AVATAR_COUNT * Math.random()) + AVATAR_EXT;
+    avatar.alt = AVATAR_TEXT;
+    avatar.width = AVATAR_WIDTH;
+    avatar.height = AVATAR_HEIGHT;
 
     comment.appendChild(avatar);
     comment.appendChild(document.createTextNode(textComment));
@@ -27,9 +33,10 @@
     }
   };
 
-  var createCommentList = function (commentArray) {
+  var createCommentList = function (commentArray, startNumber) {
+    startNumber = startNumber || 0;
     var fragment = document.createDocumentFragment();
-    commentArray.forEach(function (textComment) {
+    commentArray.slice(startNumber, startNumber + COMMENT_COUNT).forEach(function (textComment) {
       fragment.appendChild(createComment(textComment));
     });
 
@@ -38,37 +45,55 @@
 
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
+  var bigPictureComments = bigPicture.querySelector('.social__comments');
+  var bigPictureLoadComment = bigPicture.querySelector('.social__loadmore');
+  var bigPictureCommentCount = bigPicture.querySelector('.social__comment-count');
 
   window.picturePreview = function (pictureOption) {
+
     bigPicture.classList.remove('hidden');
     document.querySelector('body').classList.add('modal-open');
-    document.addEventListener('keydown', bigPictureEscPressHandler);
 
     bigPicture.querySelector('.big-picture__img img').src = pictureOption.url;
     bigPicture.querySelector('.likes-count').textContent = pictureOption.likes;
     bigPicture.querySelector('.comments-count').textContent = pictureOption.comments.length;
     bigPicture.querySelector('.social__caption').textContent = pictureOption.description;
 
-    var bigPictureComments = bigPicture.querySelector('.social__comments');
     removeAllComments(bigPictureComments);
+    bigPictureCommentCount.classList.add('hidden');
 
     bigPictureComments.appendChild(createCommentList(pictureOption.comments));
-    bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
-    bigPicture.querySelector('.social__loadmore').classList.add('visually-hidden');
-  };
-  var closeBigPicture = function () {
-    bigPicture.classList.add('hidden');
-    document.querySelector('body').classList.remove('modal-open');
-    document.removeEventListener('keydown', bigPictureEscPressHandler);
-  };
-  var bigPictureEscPressHandler = function (evt) {
-    if (window.utils.isEnterEsc(evt)) {
-      closeBigPicture();
+    if (pictureOption.comments.length <= COMMENT_COUNT) {
+      bigPictureLoadComment.classList.add('hidden');
     }
-  };
 
-  bigPictureCancel.addEventListener('click', function () {
-    closeBigPicture();
-  });
+    var loadCommentHandler = function () {
+      bigPictureComments.appendChild(createCommentList(pictureOption.comments, bigPictureComments.childElementCount));
+      if (pictureOption.comments.length === bigPictureComments.childElementCount) {
+        bigPictureLoadComment.removeEventListener('click', loadCommentHandler);
+        bigPictureLoadComment.classList.add('hidden');
+      }
+    };
+
+    var closeBigPicture = function () {
+      bigPictureLoadComment.classList.remove('hidden');
+      bigPicture.classList.add('hidden');
+      document.querySelector('body').classList.remove('modal-open');
+      bigPictureLoadComment.removeEventListener('click', loadCommentHandler);
+      document.removeEventListener('keydown', bigPictureEscPressHandler);
+    };
+
+    var bigPictureEscPressHandler = function (evt) {
+      if (window.utils.isEnterEsc(evt)) {
+        closeBigPicture();
+      }
+    };
+
+    bigPictureCancel.addEventListener('click', function () {
+      closeBigPicture();
+    });
+    bigPictureLoadComment.addEventListener('click', loadCommentHandler);
+    document.addEventListener('keydown', bigPictureEscPressHandler);
+  };
 
 })();

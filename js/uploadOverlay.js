@@ -1,6 +1,18 @@
 'use strict';
 
 (function () {
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var MIN_IMG_SIZE = 25;
+  var MAX_IMG_SIZE = 100;
+  var STEP_IMG_SIZE = 25;
+  var VALIDATE_ERROR_RESPONSE = {
+    MAX_COUNT: 'Слишком много хештегов, максимум 5',
+    INVALID_FIRST_SYMBOL: 'Хэштеги должны начинаться с #',
+    MIN_LENGTH: 'Хэштеги не могут состоять из одной #',
+    MAX_LENGTH: 'Хэштеги не могут быть длиннее 20 символов (вместе с решеткой)',
+    SIMILAR: 'Хэштеги не могут быть одинаковыми'
+  };
+
   var uploadFileInput = document.querySelector('#upload-file');
   var uploadOverlay = document.querySelector('.img-upload__overlay');
   var uploadForm = document.querySelector('#upload-select-image');
@@ -34,8 +46,8 @@
   var openUploadOverlay = function () {
     uploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', uploadOverlayEscPressHandler);
-    resizeValue.value = '100%';
-    uploadScale.classList.add('hidden');
+    resizeValue.value = MAX_IMG_SIZE + '%';
+    uploadScale.classList.add('visually-hidden');
     effectsList.querySelector('#effect-none').checked = true;
     removeAllEffects();
   };
@@ -43,34 +55,53 @@
     uploadOverlay.classList.add('hidden');
     document.removeEventListener('keydown', uploadOverlayEscPressHandler);
     uploadFileInput.value = '';
+    uploadImgPreview.style.transform = '';
   };
   var resizeImg = function (step) {
     var sizeValue = +resizeValue.value.slice(0, -1) + step;
-    sizeValue = (sizeValue > 100) ? 100 : sizeValue;
-    sizeValue = (sizeValue < 25) ? 25 : sizeValue;
+    sizeValue = (sizeValue > MAX_IMG_SIZE) ? MAX_IMG_SIZE : sizeValue;
+    sizeValue = (sizeValue < MIN_IMG_SIZE) ? MIN_IMG_SIZE : sizeValue;
     resizeValue.value = sizeValue + '%';
     uploadImgPreview.style.transform = 'scale(' + sizeValue / 100 + ')';
   };
   uploadFileInput.addEventListener('change', function () {
-    openUploadOverlay();
+    var file = uploadFileInput.files[0];
+    var img = uploadImgPreview.querySelector('img');
+    var effectsImg = effectsList.querySelectorAll('.effects__preview');
+
+    if (FILE_TYPES.some(function (x) {
+      return file.name.toLowerCase().endsWith(x);
+    })) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        img.src = reader.result;
+        effectsImg.forEach(function (x) {
+          x.style.backgroundImage = 'url(' + reader.result + ')';
+        });
+        openUploadOverlay();
+      });
+
+      reader.readAsDataURL(file);
+    }
   });
   uploadOverlayCancel.addEventListener('click', function () {
     closeUploadOverlay();
   });
   resizeValueMinus.addEventListener('click', function () {
-    resizeImg(-25);
+    resizeImg(-STEP_IMG_SIZE);
   });
   resizeValuePlus.addEventListener('click', function () {
-    resizeImg(25);
+    resizeImg(STEP_IMG_SIZE);
   });
 
   var applyEffect = function (effectName) {
     removeAllEffects();
     uploadImgPreview.classList.add('effects__preview--' + effectName);
     if (effectName === 'none') {
-      uploadScale.classList.add('hidden');
+      uploadScale.classList.add('visually-hidden');
     } else {
-      uploadScale.classList.remove('hidden');
+      uploadScale.classList.remove('visually-hidden');
       scalePin.style.left = scaleLine.offsetWidth + 'px';
       scaleLevel.style.width = scaleLine.offsetWidth + 'px';
       scaleValue.value = 100;
@@ -105,21 +136,21 @@
       return x.length > 0;
     });
     if (arrHashtags.length > 5) {
-      textHashtags.setCustomValidity('Слишком много хештегов, максимум 5');
+      textHashtags.setCustomValidity(VALIDATE_ERROR_RESPONSE.MAX_COUNT);
     } else if (arrHashtags.some(function (x) {
       return x[0] !== '#';
     })) {
-      textHashtags.setCustomValidity('Хэштеги должны начинаться с #');
+      textHashtags.setCustomValidity(VALIDATE_ERROR_RESPONSE.INVALID_FIRST_SYMBOL);
     } else if (arrHashtags.some(function (x) {
       return x.length === 1;
     })) {
-      textHashtags.setCustomValidity('Хэштеги не могут состоять из одной #');
+      textHashtags.setCustomValidity(VALIDATE_ERROR_RESPONSE.MIN_LENGTH);
     } else if (arrHashtags.some(function (x) {
       return x.length > 20;
     })) {
-      textHashtags.setCustomValidity('Хэштеги не могут быть длиннее 20 символов (вместе с решеткой)');
+      textHashtags.setCustomValidity(VALIDATE_ERROR_RESPONSE.MAX_LENGTH);
     } else if (getUniqueArray(arrHashtags).length !== arrHashtags.length) {
-      textHashtags.setCustomValidity('Хэштеги не могут быть одинаковыми');
+      textHashtags.setCustomValidity(VALIDATE_ERROR_RESPONSE.SIMILAR);
     } else {
       textHashtags.setCustomValidity('');
     }
