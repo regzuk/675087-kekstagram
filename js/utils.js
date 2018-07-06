@@ -2,12 +2,20 @@
 
 (function () {
   var ESC_KEYCODE = 27;
+  var LEFT_KEYCODE = 37;
+  var RIGHT_KEYCODE = 39;
   var DEBOUNCE_INTERVAL = 500;
   var TIMEOUT = 4000;
 
   window.utils = {
     isEnterEsc: function (evt) {
       return evt.keyCode === ESC_KEYCODE;
+    },
+    isEnterLeft: function (evt) {
+      return evt.keyCode === LEFT_KEYCODE;
+    },
+    isEnterRight: function (evt) {
+      return evt.keyCode === RIGHT_KEYCODE;
     },
     errorHandler: function (errorMessage) {
       var node = document.createElement('div');

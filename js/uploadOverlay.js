@@ -47,7 +47,7 @@
     uploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', uploadOverlayEscPressHandler);
     resizeValue.value = MAX_IMG_SIZE + '%';
-    uploadScale.classList.add('hidden');
+    uploadScale.classList.add('visually-hidden');
     effectsList.querySelector('#effect-none').checked = true;
     removeAllEffects();
   };
@@ -99,9 +99,9 @@
     removeAllEffects();
     uploadImgPreview.classList.add('effects__preview--' + effectName);
     if (effectName === 'none') {
-      uploadScale.classList.add('hidden');
+      uploadScale.classList.add('visually-hidden');
     } else {
-      uploadScale.classList.remove('hidden');
+      uploadScale.classList.remove('visually-hidden');
       scalePin.style.left = scaleLine.offsetWidth + 'px';
       scaleLevel.style.width = scaleLine.offsetWidth + 'px';
       scaleValue.value = 100;
