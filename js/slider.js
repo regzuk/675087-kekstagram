@@ -1,6 +1,13 @@
 'use strict';
 
 (function () {
+  var EFFECTS_NAME = {
+    CHROME: 'chrome',
+    SEPIA: 'sepia',
+    MARVIN: 'marvin',
+    PHOBOS: 'phobos',
+    HEAT: 'heat'
+  };
   var uploadImgPreview = window.uploadOverlay.querySelector('.img-upload__preview');
   var uploadScale = window.uploadOverlay.querySelector('.img-upload__scale');
   var scaleLine = uploadScale.querySelector('.scale__line');
@@ -17,19 +24,19 @@
     var changeEffectValue = function (value, effect) {
       var filter = '';
       switch (effect) {
-        case 'chrome':
+        case EFFECTS_NAME.CHROME:
           filter = 'grayscale(' + value / 100 + ')';
           break;
-        case 'sepia':
+        case EFFECTS_NAME.SEPIA:
           filter = 'sepia(' + value / 100 + ')';
           break;
-        case 'marvin':
+        case EFFECTS_NAME.MARVIN:
           filter = 'invert(' + value + '%)';
           break;
-        case 'phobos':
+        case EFFECTS_NAME.PHOBOS:
           filter = 'blur(' + value / 100 * 3 + 'px)';
           break;
-        case 'heat':
+        case EFFECTS_NAME.HEAT:
           filter = 'brightness(' + (1 + value / 100 * 2) + ')';
           break;
       }

@@ -4,6 +4,11 @@
 
   var AVATAR_COUNT = 6;
   var COMMENT_COUNT = 5;
+  var AVATAR_TEXT = 'Аватар комментатора фотографии';
+  var AVATAR_WIDTH = 35;
+  var AVATAR_HEIGHT = 35;
+  var AVATAR_PATH = 'img/avatar-';
+  var AVATAR_EXT = '.svg';
 
   var createComment = function (textComment) {
     var comment = document.createElement('li');
@@ -11,10 +16,10 @@
 
     var avatar = document.createElement('img');
     avatar.classList.add('social__picture');
-    avatar.src = 'img/avatar-' + Math.ceil(AVATAR_COUNT * Math.random()) + '.svg';
-    avatar.alt = 'Аватар комментатора фотографии';
-    avatar.width = '35';
-    avatar.height = '35';
+    avatar.src = AVATAR_PATH + Math.ceil(AVATAR_COUNT * Math.random()) + AVATAR_EXT;
+    avatar.alt = AVATAR_TEXT;
+    avatar.width = AVATAR_WIDTH;
+    avatar.height = AVATAR_HEIGHT;
 
     comment.appendChild(avatar);
     comment.appendChild(document.createTextNode(textComment));

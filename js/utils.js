@@ -3,6 +3,7 @@
 (function () {
   var ESC_KEYCODE = 27;
   var DEBOUNCE_INTERVAL = 500;
+  var TIMEOUT = 4000;
 
   window.utils = {
     isEnterEsc: function (evt) {
@@ -22,7 +23,7 @@
       document.body.querySelector('main').appendChild(node);
       setTimeout(function () {
         document.body.querySelector('main').removeChild(node);
-      }, 4000);
+      }, TIMEOUT);
     },
     debounce: function (func) {
       var lastTimeout;
